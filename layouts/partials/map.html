@@ -1,0 +1,27 @@
+{{- $lat := .lat -}}
+{{- $lon := .lon -}}
+{{- $zoom := .zoom | default "15" -}}
+{{- $width := .width | default "100%" -}}
+{{- $height := .height | default "200px" -}}
+{{- $marker := .marker | default "true" -}}
+
+{{- $delta := div 0.008 (math.Pow 2 (sub (int $zoom) 14)) -}}
+{{- $minLon := sub (float $lon) $delta -}}
+{{- $maxLon := add (float $lon) $delta -}}
+{{- $minLat := sub (float $lat) $delta -}}
+{{- $maxLat := add (float $lat) $delta -}}
+
+{{- $bbox := printf "%.6f,%.6f,%.6f,%.6f" $minLon $minLat $maxLon $maxLat -}}
+
+<div class="osm-map" style="width: {{ $width }}; height: {{ $height }};">
+  <iframe
+    width="100%"
+    height="100%"
+    frameborder="0"
+    scrolling="no"
+    marginheight="0"
+    marginwidth="0"
+    src="https://www.openstreetmap.org/export/embed.html?bbox={{ $bbox }}&amp;layer=mapnik{{- if eq $marker "true" }}&amp;marker={{ $lat }}%2C{{ $lon }}{{- end }}"
+    style="border: 1px solid #ccc; border-radius: 6px;">
+  </iframe>
+</div>

@@ -4,5 +4,9 @@
     {{ with .Params.Description }}
       <p>{{ . | markdownify }}</p>
     {{ end }}
+    {{ with .Params.geo }}
+     {{ . }}
+      {{ partial "map.html" . }}
+    {{ end }}
   </hgroup>
 {{ end }}
